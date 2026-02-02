@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+  overflow-x: hidden;
+  color: #333;
+  text-align: center;
+}
+
+/* Floating hearts */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 18px;
+  animation: floatUp 8s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* Envelope */
+.envelope {
+  width: 320px;
+  height: 200px;
+  margin: 40px auto;
+  background: #fdf6f0;
+  position: relative;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.envelope.open .letter {
+  top: -160px;
+}
+
+.letter {
+  width: 280px;
+  height: 180px;
+  background: #fff;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  border-radius: 8px;
+  transition: 0.6s;
+  padding: 20px;
+}
+
+.letter p {
+  font-family: 'Great Vibes', cursive;
+  font-size: 26px;
+}
+
+/* Wax seals */
+.seal {
+  width: 50px;
+  height: 50px;
+  background: crimson;
+  border-radius: 50%;
+  position: absolute;
+  bottom: -25px;
+  left: 135px;
+}
+
+/* Music toggle */
+button {
+  padding: 10px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background: #fff;
+  margin: 10px;
+}
+
+/* Gallery */
+.gallery {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  border: 8px solid #f7c1cc;
+  padding: 20px;
+  border-radius: 20px;
+  max-width: 700px;
+  margin: auto;
+}
+
+.gallery img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Countdown */
+.countdown {
+  font-size: 20px;
+  margin: 20px;
+}
+
+/* Map */
+.map {
+  margin: 20px auto;
+  width: 300px;
+  height: 200px;
+  background: #fefefe;
+  border-radius: 12px;
+  position: relative;
+}
+
+.pin {
+  width: 12px;
+  height: 12px;
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+}
+
+/* Poem box */
+.poem {
+  max-width: 400px;
+  margin: 20px auto;
+  font-style: italic;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Happy Birthday ❤️</h1>
+
+<button onclick="toggleMusic()">🎵 Music</button>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2023/03/02/audio_3e62a8e08a.mp3">
+</audio>
+
+<!-- Envelope -->
+<input id="messageInput" placeholder="Type your birthday message..." style="padding:10px;width:260px;">
+<div class="envelope" onclick="openEnvelope()">
+  <div class="letter">
+    <p id="letterText">Your message appears here ✨</p>
+  </div>
+  <div class="seal"></div>
+</div>
+
+<!-- Countdown -->
+<div class="countdown" id="countdown"></div>
+
+<!-- Gallery -->
+<h2>Our Memories 📸</h2>
+<input type="file" multiple accept="image/*" onchange="loadImages(event)">
+<div class="gallery" id="gallery"></div>
+
+<!-- Poem -->
+<button onclick="generatePoem()">💌 Secret Poem</button>
+<div class="poem" id="poem"></div>
+
+<!-- Map -->
+<h2>Places We Shared 🌍</h2>
+<div class="map" onclick="addPin(event)" id="map"></div>
+
+<script>
+/* Floating hearts */
+setInterval(() => {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.innerHTML = '❤️';
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}, 600);
+
+/* Envelope */
+function openEnvelope() {
+  document.querySelector('.envelope').classList.toggle('open');
+  document.getElementById('letterText').innerText =
+    document.getElementById('messageInput').value || 'Happy Birthday, my favorite person ❤️';
+}
+
+/* Music */
+function toggleMusic() {
+  const music = document.getElementById('music');
+  music.paused ? music.play() : music.pause();
+}
+
+/* Gallery */
+function loadImages(e) {
+  const gallery = document.getElementById('gallery');
+  [...e.target.files].forEach(file => {
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    gallery.appendChild(img);
+  });
+}
+
+/* Countdown */
+const birthday = new Date('2026-04-07');
+setInterval(() => {
+  const diff = birthday - new Date();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  document.getElementById('countdown').innerText =
+    days > 0 ? `🎉 ${days} days until your birthday` : '🎂 Today is the day!';
+}, 1000);
+
+/* Poem */
+function generatePoem() {
+  const poems = [
+    "You are my calm, my laugh, my favorite place.",
+    "Every year you glow brighter, and I fall deeper.",
+    "If love had a birthday, it would be yours."
+  ];
+  document.getElementById('poem').innerText =
+    poems[Math.floor(Math.random() * poems.length)];
+}
+
+/* Map pins */
+function addPin(e) {
+  const map = document.getElementById('map');
+  const pin = document.createElement('div');
+  pin.className = 'pin';
+  pin.style.left = e.offsetX + 'px';
+  pin.style.top = e.offsetY + 'px';
+  map.appendChild(pin);
+}
+</script>
+
+</body>
+</html>
